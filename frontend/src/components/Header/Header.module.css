@@ -1,0 +1,96 @@
+.header {
+  height: var(--header-height);
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.headerWrap {
+  display: flex;
+  align-items: center;
+  height: var(--header-height);
+  justify-content: space-between;
+}
+
+.left {
+  height: 50px;
+}
+
+.MPCLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.userAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  margin-right: 12px;
+}
+
+.userImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.displayName {
+  font-size: 1.4rem;
+}
+
+.logoutBtn {
+  background: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all linear 0.25s;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+}
+
+.googleLoginBtn {
+  --radius: 8px;
+  outline: none;
+  border: none;
+  padding: 6px 20px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all linear 0.25s;
+}
+
+.googleLoginBtn:hover,
+.logoutBtn:hover {
+  cursor: pointer;
+  background: #ddd;
+}
+
+.googleLoginIcon {
+  width: 32px;
+  height: 32px;
+}
+
+.googleLoginIconImg {
+  width: 100%;
+}
+
+.googleLoginText {
+  font-size: 1.4rem;
+}
