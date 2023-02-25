@@ -1,0 +1,65 @@
+.wrapper {
+  width: calc(100% / var(--item) - var(--gap));
+  background: #ccc;
+  margin-left: var(--gap);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.banner {
+  padding-top: 60%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bannerImg {
+  width: 100%;
+}
+
+.info {
+  margin: 12px 0;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.author {
+}
+
+.url {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.linkDemo {
+}
+
+.react {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.reactIcon {
+  font-size: 2rem;
+  transition: all linear 0.2s;
+}
+
+.reactIcon.isReacted {
+  color: #ff6f61;
+}
+
+.react:hover {
+  cursor: pointer;
+}
+
+.react:hover .reactIcon {
+  transform: scale(1.2);
+}
+
+.reactCount {
+}

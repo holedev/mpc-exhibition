@@ -4,19 +4,29 @@ import styles from './Header.module.css'
 import { useContext } from 'react'
 import { Context } from '../../store/UserContext/Context'
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 function Header() {
-  const [user] = useContext(Context)
+  const [user, setUser] = useContext(Context)
   const auth = getAuth()
+
+  const handleLogout = () => {
+    user?.auth.signOut()
+  }
 
   const handleLoginGoogle = async () => {
     const provider = new GoogleAuthProvider()
 
     const res = await signInWithPopup(auth, provider)
-  }
 
-  const handleLogout = () => {
-    user?.auth.signOut()
+    const regex = /^[a-zA-Z0-9]+@ou\.edu\.vn$/
+    if (!regex.test(res.user.email)) {
+      Swal.fire('Email không hợp lệ! Vui lòng đăng nhập bằng email của trường!').then(() => {
+        setUser(null)
+        window.localStorage.clear()
+      })
+    }
   }
 
   return (

@@ -1,0 +1,38 @@
+.wrapper {
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: center;
+  padding: 32px 0 8px;
+}
+
+.body {
+  --gap: 12px;
+  --item: 5;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: calc(var(--gap) * -1);
+  padding-bottom: 40px;
+  gap: var(--gap) 0;
+}
+
+@media (max-width: 1200px) {
+  .body {
+    --item: 4;
+  }
+}
+
+@media (max-width: 900px) {
+  .body {
+    --item: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .body {
+    --item: 1;
+  }
+}

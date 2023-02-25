@@ -11,15 +11,14 @@ function Provider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged((user) => {
-      if (user?.uid) {
-        setUser(user)
-        window.localStorage.setItem('accessToken', user.accessToken)
-        return
+      if (!user?.uid) {
+        setUser(null)
+        window.localStorage.clear()
       }
 
-      setUser(null)
-      window.localStorage.clear()
-      navigate('/home')
+      setUser(user)
+      window.localStorage.setItem('token', user?.accessToken)
+      window.localStorage.setItem('userID', user?.email.slice(0, 10))
     })
 
     return () => {

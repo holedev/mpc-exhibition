@@ -4,6 +4,7 @@ import DefaultLayout from './layout/DefaultLayout'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { default as UserProvider } from './store/UserContext'
+import { default as PostsProvider } from './store/PostsContext'
 
 function App() {
   useEffect(() => {
@@ -12,25 +13,27 @@ function App() {
 
   return (
     <Router>
-      <UserProvider>
-        <Routes>
-          {publicRoute.map((route, index) => {
-            const WrapComponent = DefaultLayout
-            const Page = route.component
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <WrapComponent>
-                    <Page />
-                  </WrapComponent>
-                }
-              />
-            )
-          })}
-        </Routes>
-      </UserProvider>
+      <PostsProvider>
+        <UserProvider>
+          <Routes>
+            {publicRoute.map((route, index) => {
+              const WrapComponent = DefaultLayout
+              const Page = route.component
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <WrapComponent>
+                      <Page />
+                    </WrapComponent>
+                  }
+                />
+              )
+            })}
+          </Routes>
+        </UserProvider>
+      </PostsProvider>
     </Router>
   )
 }
