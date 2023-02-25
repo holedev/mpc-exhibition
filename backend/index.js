@@ -1,6 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import './src/config/firebase/index.js';
+import './src/config/mongoDB/index.js';
+import postRoute from './src/api/routes/post.js';
 
 const app = express();
 dotenv.config();
@@ -16,10 +19,7 @@ app.use(
     })
 );
 
-// mongoose
-//     .connect(process.env.MONGODB_LOCAL)
-//     .then((res) => console.log('Connected to MONGODB'))
-//     .catch((err) => console.log(err));
+app.use('/post', postRoute);
 
 app.listen(PORT, (req, res) => {
     console.log('Connected to server ...');
