@@ -38,9 +38,11 @@ function Post(props) {
         {/* <img className={styles.bannerImg} src={props?.banner} alt='Banner' /> */}
       </div>
       <div className={styles.info}>
-        <div className={styles.author}>Team: {props?.author}</div>
+        <div className={styles.author}>
+          Team: <b>{props?.author}</b>
+        </div>
         <div title={props?.url} className={styles.url}>
-          Link Demo:{' '}
+          <div>Link Demo:</div>
           <a href={props.url} target='_blank' className={styles.linkDemo}>
             {props?.url}
           </a>

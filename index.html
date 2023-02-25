@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon"
+        href="https://scontent.fsgn8-2.fna.fbcdn.net/v/t39.30808-6/311647526_650552766770774_8255548343519339659_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=u4DIWa_4r5MAX-5Xq_B&_nc_ht=scontent.fsgn8-2.fna&oh=00_AfABOtAHXq5WVquTCQu0MlHu-7mtcsKRG9y9o-TF25RSOA&oe=63FFD443"
+        type="image/x-icon">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .app {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form {
+            width: 500px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .body {
+            margin-bottom: 20px;
+        }
+
+        .group-input {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .label {
+            width: 100px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <form class="form">
+            <div class="title">
+                FORM NỘP SẢN PHẨM WEB DESIGN 2023
+            </div>
+            <div class="body">
+                <div class="group-input">
+                    <div for="author" class="label">Tên nhóm: </div>
+                    <input type="text" id="author">
+                </div>
+                <div class="group-input">
+                    <div for="demo" class="label">Link Demo (Github): </div>
+                    <input type="text" id="demo">
+                </div>
+                <div class="group-input">
+                    <div for="banner" class="label">Ảnh nền: </div>
+                    <input type="file" accept=".jpeg, .jpg, .jpe, .jfif, .jif, .png" id="banner">
+                </div>
+            </div>
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script src="sweetalert2.all.min.js"></script> -->
+    <script>
+        const form = document.querySelector('.form');
+        const author = document.querySelector('#author');
+        const demo = document.querySelector('#demo');
+        const banner = document.querySelector('#banner');
+
+        let bannerBase64 = null;
+        banner.onchange = (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                bannerBase64 = reader.result;
+            }
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+
+
+            const data = {
+                author: author.value.trim(),
+                demo: demo.value.trim(),
+                banner: bannerBase64,
+            }
+
+            if (data.author === '') {
+                alert('Tên nhóm không được để trống');
+                return;
+            }
+
+            if (data.demo === '') {
+                alert('Link demo không được để trống');
+                return;
+            }
+
+            if (!bannerBase64) {
+                alert('Ảnh nền không được để trống');
+                return;
+            }
+
+            fetch("http://localhost:8080/post/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    Swal.fire('Thành công!', 'Bạn đã nộp thành công', 'success')
+                    document.querySelector('.form').reset();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+    </script>
+</body>
+
+</html>

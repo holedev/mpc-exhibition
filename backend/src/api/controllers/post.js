@@ -1,11 +1,19 @@
 import Post from '../models/post.js';
-import Authorization from '../middlewares/authorization.js';
+import {cloudinaryV2} from '../../config/cloudinary/index.js';
 
 const PostController = {
     createPost: async (req, res) => {
         try {
-            const {author, url, banner} = req.body;
-            const post = await Post.create({author, url, banner});
+            const {author, demo, banner} = req.body;
+            const uploadRes = await cloudinaryV2.uploader.upload(banner, {
+                upload_preset: 'mpc-web-design',
+            });
+
+            const post = await Post.create({
+                author,
+                url: demo,
+                banner: uploadRes.url,
+            });
 
             return res.status(200).json({
                 status: 'success',
