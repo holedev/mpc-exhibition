@@ -4,6 +4,7 @@ const post = new mongoose.Schema(
     {
         author: String,
         url: String,
+        banner: String,
         react_list: {
             type: Array,
             default: [],
