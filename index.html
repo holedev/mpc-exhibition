@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MPC WEB DESIGN 2023</title>
     <link rel="shortcut icon"
         href="https://scontent.fsgn8-2.fna.fbcdn.net/v/t39.30808-6/311647526_650552766770774_8255548343519339659_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=u4DIWa_4r5MAX-5Xq_B&_nc_ht=scontent.fsgn8-2.fna&oh=00_AfABOtAHXq5WVquTCQu0MlHu-7mtcsKRG9y9o-TF25RSOA&oe=63FFD443"
         type="image/x-icon">
@@ -107,6 +107,7 @@
         const demo = document.querySelector('#demo');
         const banner = document.querySelector('#banner');
 
+        let loading = false;
         let bannerBase64 = null;
         banner.onchange = (e) => {
             const file = e.target.files[0];
@@ -119,7 +120,7 @@
 
         form.onsubmit = async (e) => {
             e.preventDefault();
-
+            if (loading) return;
 
             const data = {
                 author: author.value.trim(),
@@ -142,6 +143,7 @@
                 return;
             }
 
+            loading = true;
             fetch("https://mpc-web-design-server.onrender.com/post/create", {
                 method: "POST",
                 headers: {
@@ -156,6 +158,8 @@
                 })
                 .catch((err) => {
                     console.log(err);
+                }).finally(() => {
+                    loading = false;
                 });
         }
 
