@@ -19,6 +19,11 @@
             box-sizing: border-box;
         }
 
+        body {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
         .app {
             display: flex;
             justify-content: center;
@@ -31,6 +36,7 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background: #7CB9E8;
         }
 
         .title {
@@ -61,6 +67,7 @@
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            outline: none;
         }
 
         button {
@@ -68,11 +75,37 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #000;
+            background-color: #C3D8E4;
             color: #fff;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
+            transition: all linear 0.25s;
+        }
+
+        button:hover {
+            background-color: rgb(187, 207, 219);
+        }
+
+
+        .loading {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.2);
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+
+        .loading img {
+            width: 500px;
+        }
+
+        .redirect {
+            text-align: center;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -98,7 +131,14 @@
                 </div>
             </div>
             <button type="submit">Gửi</button>
+            <div class="redirect">
+                Hoặc chuyển đến <a class="home-btn" href="https://mpc-web-design.netlify.app">Trang chủ</a>
+            </div>
+
         </form>
+        <div class="loading">
+            <img src="./assets/img/loading.gif" alt="">
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -108,6 +148,7 @@
         const author = document.querySelector('#author');
         const demo = document.querySelector('#demo');
         const banner = document.querySelector('#banner');
+        const loadingE = document.querySelector('.loading')
 
         let loading = false;
         let bannerBase64 = null;
@@ -120,49 +161,58 @@
             }
         }
 
+        function checkLoading() {
+            if (loading) {
+                document.querySelector('.loading').style.display = 'flex';
+            } else {
+                document.querySelector('.loading').style.display = 'none';
+            }
+        }
+
         form.onsubmit = async (e) => {
             e.preventDefault();
-            if (loading) return;
-
             const data = {
                 author: author.value.trim(),
                 demo: demo.value.trim(),
                 banner: bannerBase64,
             }
-
             if (data.author === '') {
                 alert('Tên nhóm không được để trống');
-                return;
+                return author.focus();
             }
 
             if (data.demo === '') {
                 alert('Link demo không được để trống');
-                return;
+                return demo.focus();
             }
 
             if (!bannerBase64) {
                 alert('Ảnh nền không được để trống');
-                return;
+                return banner.focus();
             }
 
-            loading = true;
-            fetch("https://mpc-web-design-server.onrender.com/post/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    Swal.fire('Thành công!', 'Bạn đã nộp thành công', 'success')
-                    document.querySelector('.form').reset();
+            if (!loading) {
+                loading = true;
+                checkLoading()
+                fetch("https://mpc-web-design-server.onrender.com/post/create", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
                 })
-                .catch((err) => {
-                    console.log(err);
-                }).finally(() => {
-                    loading = false;
-                });
+                    .then((res) => res.json())
+                    .then((data) => {
+                        Swal.fire('Thành công!', 'Bạn đã nộp thành công', 'success')
+                        document.querySelector('.form').reset();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    }).finally(() => {
+                        loading = false;
+                        checkLoading()
+                    });
+            }
         }
 
     </script>
