@@ -5,6 +5,7 @@
   border-radius: 4px;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
 }
 
 .banner {
@@ -59,4 +60,23 @@
 }
 
 .reactCount {
+}
+
+.export {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #ccc;
+  cursor: pointer;
+  transition: all linear 0.2s;
+}
+
+.export:hover {
+  background: #1680d6;
 }

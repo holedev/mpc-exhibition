@@ -1,10 +1,10 @@
 import Post from '../models/post.js';
-import {cloudinaryV2} from '../../config/cloudinary/index.js';
+import { cloudinaryV2 } from '../../config/cloudinary/index.js';
 
 const PostController = {
     createPost: async (req, res) => {
         try {
-            const {author, demo, banner} = req.body;
+            const { author, demo, banner } = req.body;
             const uploadRes = await cloudinaryV2.uploader.upload(banner, {
                 upload_preset: 'mpc-web-design',
             });
@@ -28,7 +28,7 @@ const PostController = {
     },
     reactPost: async (req, res) => {
         try {
-            const {idPost} = req.params;
+            const { idPost } = req.params;
             const mssv = req.mssv;
             const post = await Post.findById(idPost);
 
@@ -64,7 +64,7 @@ const PostController = {
     },
     getAllPost: async (req, res) => {
         try {
-            const {userID} = req.params;
+            const { userID } = req.params;
             const posts = await Post.find();
 
             const data = [];
@@ -90,6 +90,31 @@ const PostController = {
             return res.status(200).json({
                 status: 'success',
                 data: data,
+            });
+        } catch (err) {
+            return res.status(500).json({
+                status: 'error',
+                data: err,
+            });
+        }
+    },
+    exportPost: async (req, res) => {
+        try {
+            const { idPost } = req.params;
+            const post = await Post.findById(idPost);
+            if (!post) {
+                return res.status(404).json({
+                    status: 'error',
+                    data: 'Post not found',
+                });
+            }
+
+            return res.status(200).json({
+                status: 'success',
+                data: {
+                    author: post.author,
+                    data: post.react_list,
+                },
             });
         } catch (err) {
             return res.status(500).json({

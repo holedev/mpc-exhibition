@@ -1,8 +1,9 @@
 import clsx from 'clsx'
 import axios from 'axios'
 import styles from './Post.module.css'
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { Context as PostsContext } from '../../../store/PostsContext'
+import { Context as UserContext } from '../../../store/UserContext'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -10,6 +11,12 @@ function Post(props) {
   const MySwal = withReactContent(Swal)
   const ref = useRef(null)
   const [data, setData] = useContext(PostsContext)
+  const [user, setUser] = useContext(UserContext)
+
+  const [admin, setAdmin] = useState(() => {
+    const regex = /it.mpclub@ou\.edu\.vn/
+    return regex.test(user?.email)
+  })
 
   const handleReact = async (id) => {
     await axios
@@ -29,7 +36,37 @@ function Post(props) {
         })
       })
       .catch((err) => {
-        return MySwal.fire(<p>Đăng nhập trước đã!</p>)
+        return MySwal.fire(<p>Vui lòng đăng nhập bằng mail SV OU!</p>)
+      })
+  }
+
+  const exportCSV = (res) => {
+    let data = ''
+
+    res.data.forEach((item) => {
+      data += item + '\n'
+    })
+
+    const universalBOM = '\uFEFF'
+    const element = document.createElement('a')
+    element.setAttribute(
+      'href',
+      'data:text/csv; charset=utf-8,' + encodeURIComponent(universalBOM + data)
+    )
+    element.download = `${res.author}.csv`
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+  }
+
+  const handleExport = async (id) => {
+    await axios
+      .post(import.meta.env.VITE_API_URL + '/post/export/' + id)
+      .then((res) => {
+        exportCSV(res.data?.data)
+      })
+      .catch((err) => {
+        console.log(err)
       })
   }
 
@@ -52,12 +89,7 @@ function Post(props) {
 
   return (
     <div className={styles.wrapper}>
-      <div
-        ref={ref}
-        lazy-src={props?.banner}
-        // style={{ backgroundImage: `url('${props?.banner}')` }}
-        className={styles.banner}
-      ></div>
+      <div ref={ref} lazy-src={props?.banner} className={styles.banner}></div>
       <div className={styles.info}>
         <div className={styles.author}>
           Team: <b>{props?.author}</b>
@@ -80,6 +112,11 @@ function Post(props) {
           <div className={styles.reactCount}>{props?.react}</div>
         </div>
       </div>
+      {admin && (
+        <div onClick={() => handleExport(props?.id)} className={styles.export}>
+          <i className='fa-solid fa-download'></i>
+        </div>
+      )}
     </div>
   )
 }

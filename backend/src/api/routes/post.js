@@ -11,5 +11,6 @@ route.post(
     Authorization.isAuthorized,
     PostController.reactPost
 );
+route.post('/export/:idPost', PostController.exportPost);
 
 export default route;

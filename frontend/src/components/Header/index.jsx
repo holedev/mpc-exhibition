@@ -20,7 +20,7 @@ function Header() {
 
     const res = await signInWithPopup(auth, provider)
 
-    const regex = /^[a-zA-Z0-9]+@ou\.edu\.vn$/
+    const regex = /@ou\.edu\.vn/
     if (!regex.test(res.user.email)) {
       Swal.fire('Email không hợp lệ! Vui lòng đăng nhập bằng email của trường!').then(() => {
         window.localStorage.clear()
