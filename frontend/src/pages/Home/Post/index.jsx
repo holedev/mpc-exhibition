@@ -1,13 +1,14 @@
 import clsx from 'clsx'
 import axios from 'axios'
 import styles from './Post.module.css'
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { Context as PostsContext } from '../../../store/PostsContext'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 function Post(props) {
   const MySwal = withReactContent(Swal)
+  const ref = useRef(null)
   const [data, setData] = useContext(PostsContext)
 
   const handleReact = async (id) => {
@@ -32,11 +33,31 @@ function Post(props) {
       })
   }
 
+  const lazyLoad = (element) => {
+    if (element.getAttribute('lazy-src')) {
+      const url = element.getAttribute('lazy-src')
+      element.setAttribute('style', `background-image: url('${url}')`)
+      element.removeAttribute('lazy-src')
+    }
+  }
+
+  useEffect(() => {
+    let observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        lazyLoad(entries[0].target)
+      }
+    })
+    observer.observe(ref.current)
+  }, [])
+
   return (
     <div className={styles.wrapper}>
-      <div style={{ backgroundImage: `url('${props?.banner}')` }} className={styles.banner}>
-        {/* <img className={styles.bannerImg} src={props?.banner} alt='Banner' /> */}
-      </div>
+      <div
+        ref={ref}
+        lazy-src={props?.banner}
+        // style={{ backgroundImage: `url('${props?.banner}')` }}
+        className={styles.banner}
+      ></div>
       <div className={styles.info}>
         <div className={styles.author}>
           Team: <b>{props?.author}</b>
