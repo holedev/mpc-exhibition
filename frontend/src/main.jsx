@@ -9,9 +9,9 @@ const rootElement = document.getElementById('root')
 rootElement.style.minHeight = '100vh'
 
 ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <GlobalStyle>
       <App />
     </GlobalStyle>
-  </React.StrictMode>
+  // </React.StrictMode>
 )

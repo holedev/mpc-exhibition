@@ -3,7 +3,8 @@
   background: #ccc;
   margin-left: var(--gap);
   border-radius: 4px;
-  overflow: hidden;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .banner {
@@ -11,10 +12,6 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-}
-
-.bannerImg {
-  width: 100%;
 }
 
 .info {

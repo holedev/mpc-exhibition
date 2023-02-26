@@ -23,8 +23,8 @@ function Header() {
     const regex = /^[a-zA-Z0-9]+@ou\.edu\.vn$/
     if (!regex.test(res.user.email)) {
       Swal.fire('Email không hợp lệ! Vui lòng đăng nhập bằng email của trường!').then(() => {
-        setUser(null)
         window.localStorage.clear()
+        setUser(null)
       })
     }
   }
